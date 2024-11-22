@@ -1,8 +1,7 @@
-﻿using NaughtyAttributes;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _Code.Scripts
+namespace _Code.Scripts.AppBehaviour
 {
     public class SceneChanger : MonoBehaviour
     {
