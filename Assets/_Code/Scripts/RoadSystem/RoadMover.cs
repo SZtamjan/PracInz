@@ -5,12 +5,28 @@ namespace _Code.Scripts.RoadSystem
 {
     public class RoadMover : MonoBehaviour
     {
+        public float disappearDistance { private get; set; }
+        
         private float _mySpeed;
         public float mySpeed { private get; set; } = 5f;
-        private void Update()
+        public Transform playerPos { private get; set; }
+        public RoadManager roadManager { get; set; }
+        
+        private void Update() // zmienic na state machine xD
         {
-            Vector3 newPos = transform.position - new Vector3(0, 0, 0.01f * mySpeed);
+            Vector3 myCurrPos = transform.position;
+            Vector3 newPos = myCurrPos - new Vector3(0, 0, 0.01f * mySpeed);
             transform.position = newPos;
+
+            if (myCurrPos.z < -disappearDistance)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            roadManager.currentRoads.Remove(this);
         }
     }
 
