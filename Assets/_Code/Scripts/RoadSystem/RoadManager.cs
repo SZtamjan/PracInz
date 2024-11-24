@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using _Code.Scripts.Obstacles;
 using _Code.Scripts.Player;
 using _Code.Scripts.Singleton;
 using UnityEngine;
@@ -12,9 +13,21 @@ namespace _Code.Scripts.RoadSystem
     public class RoadManager : Singleton<RoadManager>
     {
         [SerializeField] private Transform currentRoadElement;
+
+        public Transform CurrentRoadElement
+        {
+            get => currentRoadElement;
+            set
+            {
+                currentRoadElement = value;
+                _obstacleManager.lastRoadElement = value;
+            }
+        }
+        
         [SerializeField] private GameObject roadPrefab;
 
-        private Transform _playersPos; //dodaj to do awake
+        private Transform _playersPos;
+        private ObstacleManager _obstacleManager;
         [SerializeField] private float spawnDistance;
         [Tooltip("Can not be smaller than spawnDistance!")] [SerializeField] private float roadDisappearDistance;
 
@@ -31,30 +44,33 @@ namespace _Code.Scripts.RoadSystem
             }
         }
 
-        private RoadSpawnState roadSpawnState;
+        private RoadSpawnState _roadSpawnState;
         
-        public RoadSpawnState currentState
+        public RoadSpawnState roadSpawnState
         {
-            private get => roadSpawnState;
+            private get => _roadSpawnState;
             set
             {
                 if (!Enum.IsDefined(typeof(RoadSpawnState), value))
                     throw new InvalidEnumArgumentException(nameof(value), (int)value, typeof(RoadSpawnState));
-                roadSpawnState = value;
+                _roadSpawnState = value;
                 StateChanged();
             }
         }
 
         private void Awake()
         {
+            _obstacleManager = ObstacleManager.Instance;
+            _obstacleManager.lastRoadElement = CurrentRoadElement;
+            
             _playersPos = PlayerManager.Instance.transform;
             SetupRoadElement(); //setup of the first element
-            currentState = RoadSpawnState.WaitUntilCloseToPlayer;
+            roadSpawnState = RoadSpawnState.WaitUntilCloseToPlayer;
         }
 
         private void StateChanged()
         {
-            switch (currentState)
+            switch (roadSpawnState)
             {
                 case RoadSpawnState.SpawnNewRoadElement:
                     SpawnNewRoadElement();
@@ -70,29 +86,28 @@ namespace _Code.Scripts.RoadSystem
         private IEnumerator WaitForRoadToGetCloser()
         {
             yield return new WaitUntil(() =>
-                Vector3.Distance(_playersPos.position, currentRoadElement.position) < spawnDistance);
-            currentState = RoadSpawnState.SpawnNewRoadElement;
+                Vector3.Distance(_playersPos.position, CurrentRoadElement.position) < spawnDistance);
+            roadSpawnState = RoadSpawnState.SpawnNewRoadElement;
         }
 
         private void SpawnNewRoadElement()
         {
-            currentRoadElement = Instantiate(roadPrefab, CalculateNewPos(), currentRoadElement.rotation).transform;
+            CurrentRoadElement = Instantiate(roadPrefab, CalculateNewPos(), CurrentRoadElement.rotation).transform;
             SetupRoadElement();
-            currentState = RoadSpawnState.WaitUntilCloseToPlayer;
+            roadSpawnState = RoadSpawnState.WaitUntilCloseToPlayer;
         }
         
         private Vector3 CalculateNewPos()
         {
-            Vector3 newSpawnPos = currentRoadElement.position;
+            Vector3 newSpawnPos = CurrentRoadElement.position;
             newSpawnPos.z += roadPrefab.transform.localScale.z * 10f;
             return newSpawnPos;
         }
 
         private void SetupRoadElement()
         {
-            RoadMover currRoadMover = currentRoadElement.GetComponent<RoadMover>();
+            RoadMover currRoadMover = CurrentRoadElement.GetComponent<RoadMover>();
             currentRoads.Add(currRoadMover);
-            currRoadMover.playerPos = _playersPos;
             currRoadMover.mySpeed = roadSpeed;
             currRoadMover.disappearDistance = roadDisappearDistance;
             currRoadMover.roadManager = this;

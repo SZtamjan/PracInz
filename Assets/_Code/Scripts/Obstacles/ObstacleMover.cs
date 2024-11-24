@@ -1,15 +1,13 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _Code.Scripts.RoadSystem
+namespace _Code.Scripts.Obstacles
 {
-    public class RoadMover : MonoBehaviour
+    public class ObstacleMover : MonoBehaviour
     {
         public float disappearDistance { private get; set; }
         
         private float _mySpeed;
         public float mySpeed { private get; set; } = 5f;
-        public RoadManager roadManager { get; set; }
         
         private void Update() // zmienic na state machine xD
         {
@@ -22,12 +20,5 @@ namespace _Code.Scripts.RoadSystem
                 Destroy(gameObject);
             }
         }
-
-        private void OnDestroy()
-        {
-            roadManager.currentRoads.Remove(this);
-        }
     }
-
-    
 }
