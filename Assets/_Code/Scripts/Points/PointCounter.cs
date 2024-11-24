@@ -34,9 +34,7 @@ namespace _Code.Scripts.Points
             private get;
             set;
         }
-
-        private float _time;
-
+        
         private void Awake()
         {
             _displayPoints = UIController.Instance.displayPointsProp;

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Globalization;
+using TMPro;
 using UnityEngine;
 
 namespace _Code.Scripts.UIScripts
@@ -9,7 +10,7 @@ namespace _Code.Scripts.UIScripts
 
         public void UpdatePoints(float updatedPoints)
         {
-            pointsPlace.text = $"Points: {updatedPoints:n2}";
+            pointsPlace.text = $"Points: {updatedPoints.ToString("0.00",new CultureInfo("en-US"))}";
         }
     }
 }
