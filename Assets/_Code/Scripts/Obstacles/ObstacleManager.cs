@@ -15,7 +15,7 @@ namespace _Code.Scripts.Obstacles
     {
         private Transform _playersPos;
         
-        [SerializeField] private List<GameObject> obstacles;
+        [SerializeField] private List<ObstacleData> obstacles;
 
         private Transform _currentObstacle;
 
@@ -88,23 +88,25 @@ namespace _Code.Scripts.Obstacles
         [Button]
         private void SpawnObstacle()
         {
-            CurrentObstacle = Instantiate(GetRandomObstacle(), CalculateNewPos(), Quaternion.identity).transform;
-            SetupObstacle();
+            ObstacleData data = GetRandomObstacle();
+            CurrentObstacle = Instantiate(data.Prefab, CalculateNewPos(), Quaternion.identity).transform;
+            SetupObstacle(data.MySpeedMultiplier);
             obstaclesSpawnState = ObstaclesSpawnState.WaitUntilCloseToPlayer;
         }
 
-        private void SetupObstacle()
+        private void SetupObstacle(float speedMultiplier)
         {
             ObstacleMover currObstacleMover = CurrentObstacle.GetComponent<ObstacleMover>();
             currentObstacles.Add(currObstacleMover);
             currObstacleMover.disappearDistance = obstacleDisappearDistance;
             currObstacleMover.mySpeed = obstacleSpeed;
+            currObstacleMover.speedMultiplier = speedMultiplier;
             currObstacleMover.obstacleManager = this;
         }
         
-        private GameObject GetRandomObstacle()
+        private ObstacleData GetRandomObstacle()
         {
-            return obstacles[Random.Range(0, obstacles.Count - 1)];
+            return obstacles[Random.Range(0, obstacles.Count)];
         }
 
         private Vector3 CalculateNewPos()
@@ -128,5 +130,12 @@ namespace _Code.Scripts.Obstacles
     {
         SpawnNewObstacle,
         WaitUntilCloseToPlayer
+    }
+
+    [Serializable]
+    public struct ObstacleData
+    {
+        public GameObject Prefab;
+        public float MySpeedMultiplier;
     }
 }
