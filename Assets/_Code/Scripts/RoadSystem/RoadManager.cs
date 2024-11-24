@@ -16,7 +16,7 @@ namespace _Code.Scripts.RoadSystem
 
         public Transform CurrentRoadElement
         {
-            get => currentRoadElement;
+            private get => currentRoadElement;
             set
             {
                 currentRoadElement = value;
@@ -64,8 +64,7 @@ namespace _Code.Scripts.RoadSystem
             _obstacleManager.lastRoadElement = CurrentRoadElement;
             
             _playersPos = PlayerManager.Instance.transform;
-            SetupRoadElement(); //setup of the first element
-            roadSpawnState = RoadSpawnState.WaitUntilCloseToPlayer;
+            roadSpawnState = RoadSpawnState.SpawnNewRoadElement;
         }
 
         private void StateChanged()
@@ -92,13 +91,14 @@ namespace _Code.Scripts.RoadSystem
 
         private void SpawnNewRoadElement()
         {
-            CurrentRoadElement = Instantiate(roadPrefab, CalculateNewPos(), CurrentRoadElement.rotation).transform;
+            CurrentRoadElement = Instantiate(roadPrefab, CalculateNewPos(), Quaternion.identity).transform;
             SetupRoadElement();
             roadSpawnState = RoadSpawnState.WaitUntilCloseToPlayer;
         }
         
         private Vector3 CalculateNewPos()
         {
+            if (CurrentRoadElement == null) return _playersPos.position - new Vector3(0, 1, 0);
             Vector3 newSpawnPos = CurrentRoadElement.position;
             newSpawnPos.z += roadPrefab.transform.localScale.z * 10f;
             return newSpawnPos;

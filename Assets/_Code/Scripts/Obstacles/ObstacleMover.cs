@@ -9,6 +9,8 @@ namespace _Code.Scripts.Obstacles
         private float _mySpeed;
         public float mySpeed { private get; set; } = 5f;
         
+        public ObstacleManager obstacleManager { private get; set; }
+
         private void Update() // zmienic na state machine xD
         {
             Vector3 myCurrPos = transform.position;

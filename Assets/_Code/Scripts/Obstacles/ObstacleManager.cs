@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using _Code.Scripts.RoadSystem;
 using _Code.Scripts.Singleton;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace _Code.Scripts.Obstacles
@@ -13,9 +16,22 @@ namespace _Code.Scripts.Obstacles
         private Transform _playersPos;
         
         [SerializeField] private List<GameObject> obstacles;
+
+        private Transform _currentObstacle;
+
+        public Transform CurrentObstacle
+        {
+            private get => _currentObstacle;
+            set
+            {
+                _currentObstacle = value;
+                
+            }
+        }
+        
         [SerializeField] private float spawnInterval;
         public Transform lastRoadElement { private get; set; }
-        [Tooltip("Can not be smaller than spawnDistance!")] [SerializeField] private float roadDisappearDistance;
+        [FormerlySerializedAs("roadDisappearDistance")] [Tooltip("Can not be smaller than spawnDistance!")] [SerializeField] private float obstacleDisappearDistance;
         public List<ObstacleMover> currentObstacles { get; set; } = new List<ObstacleMover>();
         
         private float _obstacleSpeed;
@@ -43,6 +59,11 @@ namespace _Code.Scripts.Obstacles
             }
         }
 
+        private void Awake()
+        {
+            obstaclesSpawnState = ObstaclesSpawnState.SpawnNewObstacle;
+        }
+
         private void StateChanged()
         {
             switch (obstaclesSpawnState)
@@ -51,16 +72,34 @@ namespace _Code.Scripts.Obstacles
                     SpawnObstacle();
                     break;
                 case ObstaclesSpawnState.WaitUntilCloseToPlayer:
+                    StartCoroutine(WaitForRoadToGetCloser());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
+        private IEnumerator WaitForRoadToGetCloser()
+        {
+            yield return new WaitForSeconds(spawnInterval);
+            obstaclesSpawnState = ObstaclesSpawnState.SpawnNewObstacle;
+        }
+        
         [Button]
         private void SpawnObstacle()
         {
-            Instantiate(GetRandomObstacle(), CalculateNewPos(), Quaternion.identity);
+            CurrentObstacle = Instantiate(GetRandomObstacle(), CalculateNewPos(), Quaternion.identity).transform;
+            SetupObstacle();
+            obstaclesSpawnState = ObstaclesSpawnState.WaitUntilCloseToPlayer;
+        }
+
+        private void SetupObstacle()
+        {
+            ObstacleMover currObstacleMover = CurrentObstacle.GetComponent<ObstacleMover>();
+            currentObstacles.Add(currObstacleMover);
+            currObstacleMover.disappearDistance = obstacleDisappearDistance;
+            currObstacleMover.mySpeed = obstacleSpeed;
+            currObstacleMover.obstacleManager = this;
         }
         
         private GameObject GetRandomObstacle()
@@ -78,7 +117,10 @@ namespace _Code.Scripts.Obstacles
 
         private void UpdateSpeedOnEveryObstacle()
         {
-            
+            foreach (ObstacleMover obstacle in currentObstacles)
+            {
+                obstacle.mySpeed = _obstacleSpeed;
+            }
         }
     }
 

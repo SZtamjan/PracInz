@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using _Code.Scripts.Obstacles;
 using _Code.Scripts.RoadSystem;
 using _Code.Scripts.Singleton;
 using NaughtyAttributes;
@@ -15,6 +16,7 @@ namespace _Code.Scripts.Player
 
         //Components
         private RoadManager _roadManager;
+        private ObstacleManager _obstacleManager;
         
         private PlayersState _playersState;
 
@@ -33,6 +35,7 @@ namespace _Code.Scripts.Player
         private void Awake()
         {
             _roadManager = RoadManager.Instance;
+            _obstacleManager = ObstacleManager.Instance;
             playersState = PlayersState.Run;
         }
 
@@ -60,21 +63,25 @@ namespace _Code.Scripts.Player
         private void Stop()
         {
             _roadManager.roadSpeed = 0f;
+            _obstacleManager.obstacleSpeed = 0f;
         }
         
         private void Run()
         {
             _roadManager.roadSpeed = playerSpeed;
+            _obstacleManager.obstacleSpeed = playerSpeed;
         }
 
         private void FastRun()
         {
             _roadManager.roadSpeed = playerFastSpeed;
+            _obstacleManager.obstacleSpeed = playerFastSpeed;
         }
 
         private void Flight()
         {
             _roadManager.roadSpeed = playerFlightSpeed;
+            _obstacleManager.obstacleSpeed = playerFlightSpeed;
         }
 
         #region Debug

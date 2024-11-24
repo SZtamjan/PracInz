@@ -9,7 +9,7 @@ namespace _Code.Scripts.RoadSystem
         
         private float _mySpeed;
         public float mySpeed { private get; set; } = 5f;
-        public RoadManager roadManager { get; set; }
+        public RoadManager roadManager { private get; set; }
         
         private void Update() // zmienic na state machine xD
         {
