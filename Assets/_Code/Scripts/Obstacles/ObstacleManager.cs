@@ -17,7 +17,6 @@ namespace _Code.Scripts.Obstacles
 
         private Transform _playersPos;
 
-        [SerializeField] private float obstaclesSpacing;
         [SerializeField] private List<ObstacleData> obstacles;
 
         private Transform _currentObstacle;
@@ -35,7 +34,8 @@ namespace _Code.Scripts.Obstacles
         [Tooltip("Can not be smaller than spawnDistance!")]
         [SerializeField]
         private float obstacleDisappearDistance;
-
+        private float obstaclesSpacing;
+        
         public List<ObstacleMover> currentObstacles { get; set; } = new List<ObstacleMover>();
 
         private float _obstacleSpeed;
@@ -67,6 +67,7 @@ namespace _Code.Scripts.Obstacles
         private void Awake()
         {
             _gameManager = GameManager.Instance;
+            obstaclesSpacing = _gameManager.RoadSpacing;
             obstaclesSpawnState = ObstaclesSpawnState.SpawnNewObstacle;
         }
 

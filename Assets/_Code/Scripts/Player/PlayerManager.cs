@@ -7,6 +7,8 @@ namespace _Code.Scripts.Player
 {
     public class PlayerManager : Singleton<PlayerManager>
     {
+        private GameManager _gameManager;
+        private float playerSpacing; //teraz zrobic input playera i spacing (najpierw przemieszczanie sie zrob i testy pod button)
         [SerializeField] private float playerSpeed;
         [SerializeField] private float playerFastSpeed;
         [SerializeField] private float playerFlightSpeed;
@@ -57,6 +59,8 @@ namespace _Code.Scripts.Player
         {
             playerAnimator = GetComponent<Animator>();
             pointCounter = PointCounter.Instance;
+            _gameManager = GameManager.Instance;
+            playerSpacing = _gameManager.RoadSpacing;
         }
     }
 }

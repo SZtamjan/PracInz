@@ -32,6 +32,11 @@ namespace _Code.Scripts
             }
         }
 
+        [SerializeField] private float roadSpacing;
+
+        public float RoadSpacing => roadSpacing;
+
+
         private void Awake()
         {
             PrepareComponents();
