@@ -76,6 +76,7 @@ namespace _Code.Scripts.Player
 
         public void WSADPlayerInput(InputAction.CallbackContext ctx)
         {
+            if(_gameManager.GameState == GameState.Stop) return;
             if (!ctx.started) return;
             InitMovePlayer(ctx.ReadValue<Vector2>());
             Debug.Log(ctx.ReadValue<Vector2>());
