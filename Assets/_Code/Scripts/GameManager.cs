@@ -4,24 +4,20 @@ using _Code.Scripts.Obstacles;
 using _Code.Scripts.Player;
 using _Code.Scripts.Points;
 using _Code.Scripts.RoadSystem;
+using _Code.Scripts.Singleton;
 using NaughtyAttributes;
 using UnityEngine;
 
 namespace _Code.Scripts
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
         //Components
         private PlayerManager _playerManager;
         private RoadManager _roadManager;
         private ObstacleManager _obstacleManager;
         
-        
         private GameState _gameState;
-        private static readonly int TrFastRun = Animator.StringToHash("TrFastRun");
-        private static readonly int TrStop = Animator.StringToHash("TrStop");
-        private static readonly int TrRun = Animator.StringToHash("TrRun");
-        private static readonly int TrFly = Animator.StringToHash("TrFly");
         private static readonly int State = Animator.StringToHash("GameState");
 
         public GameState GameState
@@ -35,7 +31,7 @@ namespace _Code.Scripts
                 StateChanged();
             }
         }
-        
+
         private void Awake()
         {
             PrepareComponents();
@@ -43,8 +39,8 @@ namespace _Code.Scripts
 
         private void StateChanged()
         {
-            _playerManager.playerAnimator.SetInteger(State,(int)GameState);
-            
+            _playerManager.playerAnimator.SetInteger(State, (int)GameState);
+
             switch (GameState)
             {
                 case GameState.Stop:
@@ -74,7 +70,7 @@ namespace _Code.Scripts
             _roadManager.roadSpeed = 0f;
             _obstacleManager.obstacleSpeed = 0f;
         }
-        
+
         private void Run()
         {
             Time.timeScale = 1f;
@@ -103,19 +99,19 @@ namespace _Code.Scripts
         {
             GameState = GameState.Stop;
         }
-        
+
         [Button]
         private void ChangeToRun()
         {
             GameState = GameState.Run;
         }
-        
+
         [Button]
         private void ChangeToFastRun()
         {
             GameState = GameState.FastRun;
         }
-        
+
         [Button]
         private void ChangeToFlight()
         {
@@ -133,6 +129,7 @@ namespace _Code.Scripts
             GameState = GameState.Run;
         }
     }
+
     public enum GameState
     {
         Stop,

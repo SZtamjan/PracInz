@@ -382,6 +382,7 @@ MonoBehaviour:
   playerFastSpeed: 20
   playerFlightSpeed: 30
   pointCounter: {fileID: 0}
+  playerAnimator: {fileID: 0}
   _iAmRunning: 0
 --- !u!95 &446826064
 Animator:
@@ -1237,10 +1238,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14cd36274d0a4ecbbb5683ddf13d3a65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstaclesSpacing: 2.5
   obstacles:
   - Prefab: {fileID: 3450621001280433623, guid: 2cfe0be19129b254aa894902db9504e0, type: 3}
+    spawnHeight: 1.5
     MySpeedMultiplier: 1
   - Prefab: {fileID: 1258080265802005440, guid: 705156a3b1ca1bb419b4a6bf87f26040, type: 3}
+    spawnHeight: 1
     MySpeedMultiplier: 2
   spawnInterval: 2
   obstacleDisappearDistance: 50
