@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using _Code.Scripts.InputSys;
 using _Code.Scripts.Points;
 using _Code.Scripts.Singleton;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -11,13 +11,14 @@ namespace _Code.Scripts.Player
     public class PlayerManager : Singleton<PlayerManager>
     {
         private GameManager _gameManager;
-        private InputManager _InputManager;
-
         private Coroutine _movePlayerCor;
-
-        private float _playerSpacing; //(najpierw przemieszczanie sie zrob i testy pod button)
+        private Coroutine _liftPlayerCor;
+        
+        private float _playerSpacing;
         private int _currentPosition = 1;
 
+        [SerializeField] private float playerNormalHeight;
+        [SerializeField] private float playerLiftHeight;
         [SerializeField] private float playerVerticalSpeed;
         [SerializeField] private float playerSpeed;
         [SerializeField] private float playerFastSpeed;
@@ -53,14 +54,14 @@ namespace _Code.Scripts.Player
             }
         }
 
-        [HideInInspector] public bool _iAmRunning;
+        [FormerlySerializedAs("_iAmRunning")] [HideInInspector] public bool iAmMoving;
 
-        public bool IAmRunning
+        public bool IAmMoving
         {
-            get => _iAmRunning;
+            get => iAmMoving;
             set
             {
-                _iAmRunning = value;
+                iAmMoving = value;
                 pointCounter.IAmRunning = value;
             }
         }
@@ -70,7 +71,6 @@ namespace _Code.Scripts.Player
             playerAnimator = GetComponent<Animator>();
             pointCounter = PointCounter.Instance;
             _gameManager = GameManager.Instance;
-            _InputManager = InputManager.Instance;
             _playerSpacing = _gameManager.RoadSpacing;
         }
 
@@ -110,34 +110,21 @@ namespace _Code.Scripts.Player
 
         private Vector3 CalculatePos(int direction)
         {
-            float theoreticalPosition;
-            switch (_currentPosition)
+            float theoreticalPosition = _currentPosition switch
             {
-                case 0:
-                    theoreticalPosition = 0 - _playerSpacing;
-                    break;
-                case 1:
-                    theoreticalPosition = 0;
-                    break;
-                case 2:
-                    theoreticalPosition = 0 + _playerSpacing;
-                    break;
-                default:
-                    theoreticalPosition = -5;
-                    break;
-            }
+                0 => 0 - _playerSpacing,
+                1 => 0,
+                2 => 0 + _playerSpacing,
+                _ => -5
+            };
 
-            if (direction == -1)
+            var position = transform.position;
+            return direction switch
             {
-                return new Vector3(theoreticalPosition - _playerSpacing, transform.position.y, transform.position.z);
-            }
-
-            if (direction == 1)
-            {
-                return new Vector3(theoreticalPosition + _playerSpacing, transform.position.y, transform.position.z);
-            }
-
-            return new Vector3(0, 10, 0);
+                -1 => new Vector3(theoreticalPosition - _playerSpacing, position.y, position.z),
+                1 => new Vector3(theoreticalPosition + _playerSpacing, position.y, position.z),
+                _ => new Vector3(0, 10, 0)
+            };
         }
 
         private IEnumerator MovePlayer(Vector3 newPos)
@@ -150,8 +137,52 @@ namespace _Code.Scripts.Player
             }
 
             transform.position = newPos;
-            Debug.Log("Przemieszczono");
             _movePlayerCor = null;
+        }
+
+        
+        public void SwitchPlayerLift(bool liftPlayer)
+        {
+            if (_liftPlayerCor != null)
+            {
+                StopCoroutine(_liftPlayerCor);
+                _liftPlayerCor = null;
+            }
+            _liftPlayerCor = StartCoroutine(ChangePlayerHeight(liftPlayer));
+        }
+        private IEnumerator ChangePlayerHeight(bool liftPlayer)
+        {
+            Vector3 updatedGoalPosition;
+            Vector3 direction;
+            
+            if (liftPlayer)
+            {
+                updatedGoalPosition = new Vector3(transform.position.x, playerLiftHeight, transform.position.z);
+                direction = (updatedGoalPosition - transform.position).normalized;
+                while (Vector3.Distance(transform.position,updatedGoalPosition) > 0.05f)
+                {
+                    updatedGoalPosition = new Vector3(transform.position.x, playerLiftHeight, transform.position.z);
+                    transform.position += direction * (playerVerticalSpeed * Time.deltaTime);
+                    yield return null;
+                }
+
+                transform.position = updatedGoalPosition;
+                _liftPlayerCor = null;
+                yield break;
+            }
+            
+            updatedGoalPosition = new Vector3(transform.position.x, playerNormalHeight, transform.position.z);
+            direction = (updatedGoalPosition - transform.position).normalized;
+            while (Vector3.Distance(transform.position,updatedGoalPosition) > 0.05f)
+            {
+                updatedGoalPosition = new Vector3(transform.position.x, playerNormalHeight, transform.position.z);
+                transform.position += direction * (playerVerticalSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            transform.position = updatedGoalPosition;
+            _liftPlayerCor = null;
+            yield break;
         }
     }
 }

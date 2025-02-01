@@ -12,7 +12,7 @@ namespace _Code.Scripts.RoadSystem
 {
     public class RoadManager : Singleton<RoadManager>
     {
-        [SerializeField] private Transform currentRoadElement;
+        private Transform currentRoadElement;
 
         public Transform CurrentRoadElement
         {

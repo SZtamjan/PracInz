@@ -23,7 +23,7 @@ namespace _Code.Scripts
         public GameState GameState
         {
             get => _gameState;
-            private set
+            set
             {
                 if (!Enum.IsDefined(typeof(GameState), value))
                     throw new InvalidEnumArgumentException(nameof(value), (int)value, typeof(GameState));
@@ -50,19 +50,19 @@ namespace _Code.Scripts
             {
                 case GameState.Stop:
                     Stop();
-                    _playerManager.IAmRunning = false;
+                    _playerManager.IAmMoving = false;
                     break;
                 case GameState.Run:
                     Run();
-                    _playerManager.IAmRunning = true;
+                    _playerManager.IAmMoving = true;
                     break;
                 case GameState.FastRun:
                     FastRun();
-                    _playerManager.IAmRunning = true;
+                    _playerManager.IAmMoving = true;
                     break;
                 case GameState.Fly:
                     Flight();
-                    _playerManager.IAmRunning = true;
+                    _playerManager.IAmMoving = true;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -71,30 +71,29 @@ namespace _Code.Scripts
 
         private void Stop()
         {
-            //Time.timeScale = 0f;
             _roadManager.roadSpeed = 0f;
             _obstacleManager.obstacleSpeed = 0f;
         }
 
         private void Run()
         {
-            Time.timeScale = 1f;
             _roadManager.roadSpeed = _playerManager.PlayerSpeed;
             _obstacleManager.obstacleSpeed = _playerManager.PlayerSpeed;
+            _playerManager.SwitchPlayerLift(false);
         }
 
         private void FastRun()
         {
-            Time.timeScale = 1f;
             _roadManager.roadSpeed = _playerManager.PlayerFastSpeed;
             _obstacleManager.obstacleSpeed = _playerManager.PlayerFastSpeed;
+            _playerManager.SwitchPlayerLift(false);
         }
 
         private void Flight()
         {
-            Time.timeScale = 1f;
             _roadManager.roadSpeed = _playerManager.PlayerFlightSpeed;
             _obstacleManager.obstacleSpeed = _playerManager.PlayerFlightSpeed;
+            _playerManager.SwitchPlayerLift(true);
         }
 
         #region Debug

@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 446826059}
   - component: {fileID: 446826063}
   - component: {fileID: 446826064}
+  - component: {fileID: 446826065}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -378,13 +379,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800b19c6eed742139e96b8fbcdb9bafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNormalHeight: 1
+  playerLiftHeight: 3
   playerVerticalSpeed: 5
   playerSpeed: 10
   playerFastSpeed: 20
   playerFlightSpeed: 30
   pointCounter: {fileID: 0}
   playerAnimator: {fileID: 0}
-  _iAmRunning: 0
+  iAmMoving: 0
 --- !u!95 &446826064
 Animator:
   serializedVersion: 5
@@ -406,6 +409,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &446826065
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446826058}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1 &462294815
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5afd8b1cc4a456a922b8d49febcabc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRoadElement: {fileID: 0}
   roadPrefab: {fileID: 6971400325394131607, guid: 247b78abbd551a24a95d495f3887711d, type: 3}
   spawnDistance: 100
   roadDisappearDistance: 50
@@ -887,8 +916,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1548280865}
-  - {fileID: 462294816}
   - {fileID: 1612411372}
+  - {fileID: 462294816}
   - {fileID: 606311605}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1243,10 +1272,16 @@ MonoBehaviour:
   obstacles:
   - Prefab: {fileID: 3450621001280433623, guid: 2cfe0be19129b254aa894902db9504e0, type: 3}
     spawnHeight: 1.5
+    spawnChance: 45
     MySpeedMultiplier: 1
+  - Prefab: {fileID: 3450621001280433623, guid: 7659a9e14e559454daf8f61e8a5c3857, type: 3}
+    spawnHeight: 1
+    spawnChance: 45
+    MySpeedMultiplier: 2
   - Prefab: {fileID: 1258080265802005440, guid: 705156a3b1ca1bb419b4a6bf87f26040, type: 3}
     spawnHeight: 1
-    MySpeedMultiplier: 2
+    spawnChance: 10
+    MySpeedMultiplier: 1
   spawnInterval: 2
   obstacleDisappearDistance: 50
 --- !u!1 &2090728233
@@ -1259,7 +1294,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2090728234}
   - component: {fileID: 2090728235}
-  - component: {fileID: 2090728236}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -1379,18 +1413,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &2090728236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2090728233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e577be954ff746c0b175931a0d126c46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

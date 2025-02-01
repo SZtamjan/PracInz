@@ -68,7 +68,7 @@ namespace _Code.Scripts.Obstacles
         {
             _gameManager = GameManager.Instance;
             obstaclesSpacing = _gameManager.RoadSpacing;
-            obstaclesSpawnState = ObstaclesSpawnState.SpawnNewObstacle;
+            obstaclesSpawnState = ObstaclesSpawnState.WaitUntilCloseToPlayer;
         }
 
         private void StateChanged()
@@ -125,6 +125,29 @@ namespace _Code.Scripts.Obstacles
 
         private ObstacleData GetRandomObstacle()
         {
+            float totalChance = 0f;
+
+            foreach (var obj in obstacles)
+            {
+                totalChance += obj.spawnChance;
+            }
+
+            float randomValue = Random.Range(0, totalChance);
+
+            float cumulativeChance = 0f;
+
+            foreach (var obj in obstacles)
+            {
+                cumulativeChance += obj.spawnChance;
+
+                if (randomValue <= cumulativeChance)
+                {
+                    return obj;
+                    break;
+                }
+            }
+            
+            Debug.LogError("Nie powinno sie to stac");
             return obstacles[Random.Range(0, obstacles.Count)];
         }
 
@@ -171,6 +194,7 @@ namespace _Code.Scripts.Obstacles
     {
         public GameObject Prefab;
         public float spawnHeight;
+        public float spawnChance;
         public float MySpeedMultiplier;
     }
 }
