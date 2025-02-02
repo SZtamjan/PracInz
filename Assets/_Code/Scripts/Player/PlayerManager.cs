@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using _Code.Scripts.Points;
 using _Code.Scripts.Singleton;
+using _Code.Scripts.UIScripts;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ namespace _Code.Scripts.Player
 {
     public class PlayerManager : Singleton<PlayerManager>
     {
+        private UIController _uiController;
         private GameManager _gameManager;
         private Coroutine _movePlayerCor;
         private Coroutine _liftPlayerCor;
@@ -71,6 +73,7 @@ namespace _Code.Scripts.Player
             playerAnimator = GetComponent<Animator>();
             pointCounter = PointCounter.Instance;
             _gameManager = GameManager.Instance;
+            _uiController = UIController.Instance;
             _playerSpacing = _gameManager.RoadSpacing;
         }
 
@@ -80,6 +83,14 @@ namespace _Code.Scripts.Player
             if (!ctx.started) return;
             InitMovePlayer(ctx.ReadValue<Vector2>());
             Debug.Log(ctx.ReadValue<Vector2>());
+        }
+
+        public void CancelInput(InputAction.CallbackContext ctx)
+        {
+            if(_gameManager.GameState == GameState.Stop) return;
+            if (!ctx.started) return;
+            _gameManager.GameState = GameState.Stop;
+            _uiController.InGameUIState = InGameUIStates.PauseUI;
         }
 
         private void InitMovePlayer(Vector2 inputVector)

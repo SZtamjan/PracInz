@@ -37,7 +37,7 @@ namespace _Code.Scripts.Points
         
         private void Awake()
         {
-            _displayPoints = UIController.Instance.displayPointsProp;
+            _displayPoints = UIController.Instance.DisplayPointsProp;
         }
 
         private void Update()

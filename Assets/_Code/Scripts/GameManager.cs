@@ -25,12 +25,16 @@ namespace _Code.Scripts
             get => _gameState;
             set
             {
+                if (_gameState == value) return;
                 if (!Enum.IsDefined(typeof(GameState), value))
                     throw new InvalidEnumArgumentException(nameof(value), (int)value, typeof(GameState));
+                PreviousGameState = _gameState;
                 _gameState = value;
                 StateChanged();
             }
         }
+        
+        public GameState PreviousGameState { get; private set; }
 
         [SerializeField] private float roadSpacing;
 
@@ -61,7 +65,7 @@ namespace _Code.Scripts
                     _playerManager.IAmMoving = true;
                     break;
                 case GameState.Fly:
-                    Flight();
+                    Flight(); //Ogarniczyc czasowo flight i blad naprawic jak klikam przemieszczanie w lewo i od razu pauza
                     _playerManager.IAmMoving = true;
                     break;
                 default:
