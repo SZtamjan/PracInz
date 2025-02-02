@@ -57,7 +57,7 @@ namespace _Code.Scripts
             switch (GameState)
             {
                 case GameState.Stop:
-                    Stop();
+                    Stop(); //blad naprawic jak klikam przemieszczanie w lewo i od razu pauza
                     _playerManager.IAmMoving = false;
                     break;
                 case GameState.Run:
@@ -69,7 +69,7 @@ namespace _Code.Scripts
                     _playerManager.IAmMoving = true;
                     break;
                 case GameState.Fly:
-                    Flight(); //Ogarniczyc czasowo flight i blad naprawic jak klikam przemieszczanie w lewo i od razu pauza
+                    Flight();
                     _playerManager.IAmMoving = true;
                     break;
                 default:

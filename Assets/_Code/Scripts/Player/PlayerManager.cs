@@ -104,7 +104,7 @@ namespace _Code.Scripts.Player
                         StopCoroutine(_movePlayerCor);
                         _movePlayerCor = null;
                     }
-                    _movePlayerCor = StartCoroutine(MovePlayer(CalculatePos(-1)));
+                    _movePlayerCor = StartCoroutine(MovePlayer(CalculatePos(-1),-1));
                     --_currentPosition;
                     break;
                 case 1:
@@ -114,7 +114,7 @@ namespace _Code.Scripts.Player
                         StopCoroutine(_movePlayerCor);
                         _movePlayerCor = null;
                     }
-                    _movePlayerCor = StartCoroutine(MovePlayer(CalculatePos(1)));
+                    _movePlayerCor = StartCoroutine(MovePlayer(CalculatePos(1),1));
                     ++_currentPosition;
                     break;
             }
@@ -139,12 +139,14 @@ namespace _Code.Scripts.Player
             };
         }
 
-        private IEnumerator MovePlayer(Vector3 newPos)
+        private IEnumerator MovePlayer(Vector3 newPos, int dir)
         {
             Vector3 direction = (newPos - transform.position).normalized;
             while (Vector3.Distance(transform.position,newPos) > 0.05f)
             {
                 transform.position += direction * (playerVerticalSpeed * Time.deltaTime);
+                if (dir == 1 && newPos.x < transform.position.x) break; 
+                if (dir == -1 && newPos.x > transform.position.x) break; 
                 yield return null;
             }
 
