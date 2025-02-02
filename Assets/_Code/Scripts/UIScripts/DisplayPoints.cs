@@ -8,6 +8,7 @@ namespace _Code.Scripts.UIScripts
     public class DisplayPoints : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI pointsPlace;
+        [SerializeField] private TextMeshProUGUI displayPointsGameOverUI;
 
         public void UpdatePoints(float updatedPoints)
         {
@@ -16,7 +17,7 @@ namespace _Code.Scripts.UIScripts
 
         public void DisplayPointsOnGameOverUI()
         {
-            pointsPlace.text = $"Points: {PointCounter.Instance.Points.ToString("0.00",new CultureInfo("en-US"))}";
+            displayPointsGameOverUI.text = $"Points: {PointCounter.Instance.Points.ToString("0.00",new CultureInfo("en-US"))}";
         }
     }
 }

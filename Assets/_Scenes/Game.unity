@@ -133,9 +133,8 @@ GameObject:
   - component: {fileID: 6731491}
   - component: {fileID: 6731493}
   - component: {fileID: 6731492}
-  - component: {fileID: 6731494}
   m_Layer: 5
-  m_Name: Points
+  m_Name: PunktyGameUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,19 +256,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6731490}
   m_CullTransparentMesh: 1
---- !u!114 &6731494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6731490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afbe5b5dac884296b586b06b9d37593c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointsPlace: {fileID: 6731492}
 --- !u!1 &205841663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,6 +1011,7 @@ GameObject:
   - component: {fileID: 647085084}
   - component: {fileID: 647085083}
   - component: {fileID: 647085087}
+  - component: {fileID: 647085088}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1134,7 +1121,20 @@ MonoBehaviour:
   gameOverUI: {fileID: 1141164219}
   pauseUI: {fileID: 1875421839}
   optionsUI: {fileID: 1517359002}
-  displayPoints: {fileID: 6731494}
+  displayPoints: {fileID: 647085088}
+--- !u!114 &647085088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647085082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afbe5b5dac884296b586b06b9d37593c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointsPlace: {fileID: 6731492}
   displayPointsGameOverUI: {fileID: 1184564778}
 --- !u!1 &667963509
 GameObject:
@@ -2979,7 +2979,7 @@ GameObject:
   - component: {fileID: 1184564779}
   - component: {fileID: 1184564778}
   m_Layer: 5
-  m_Name: Punkty
+  m_Name: PunktyGameOver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

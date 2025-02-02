@@ -20,7 +20,6 @@ namespace _Code.Scripts.UIScripts
         private RectTransform currentMenuPosition;
         
         [SerializeField] private DisplayPoints displayPoints;
-        [SerializeField] private TextMeshProUGUI displayPointsGameOverUI;
         public DisplayPoints DisplayPointsProp => displayPoints;
 
         private InGameUIStates _inGameUIState;
