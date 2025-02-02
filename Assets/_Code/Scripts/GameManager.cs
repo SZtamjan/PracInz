@@ -56,7 +56,7 @@ namespace _Code.Scripts
             switch (GameState)
             {
                 case GameState.Stop:
-                    Stop(); //blad naprawic jak klikam przemieszczanie w lewo i od razu pauza
+                    Stop();
                     _playerManager.IAmMoving = false;
                     break;
                 case GameState.Run:
@@ -69,6 +69,7 @@ namespace _Code.Scripts
                     break;
                 case GameState.Fly:
                     Flight();
+                    if (_flightTimeTrackerCor == null) _flightTimeTrackerCor = StartCoroutine(TrackFlightTimeDuration());
                     _playerManager.IAmMoving = true;
                     break;
                 default:
@@ -101,10 +102,9 @@ namespace _Code.Scripts
             _roadManager.roadSpeed = _playerManager.PlayerFlightSpeed;
             _obstacleManager.obstacleSpeed = _playerManager.PlayerFlightSpeed;
             _playerManager.SwitchPlayerLift(true);
-            if (_flightTimeTrackerCor == null) _flightTimeTrackerCor = StartCoroutine(TrackTime());
         }
 
-        private IEnumerator TrackTime()
+        private IEnumerator TrackFlightTimeDuration()
         {
             float timePassed = 0f;
             while (timePassed < flightDuration)
