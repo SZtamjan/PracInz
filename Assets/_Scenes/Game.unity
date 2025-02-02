@@ -535,8 +535,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNormalHeight: 1
-  playerLiftHeight: 3
-  playerVerticalSpeed: 5
+  playerLiftHeight: 4
+  playerHorizontalSpeed: 6
   playerSpeed: 10
   playerFastSpeed: 20
   playerFlightSpeed: 30
@@ -1988,7 +1988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 0.25490198}
+  m_Color: {r: 0.13333334, g: 0.13333334, b: 0.13333334, a: 0.60784316}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

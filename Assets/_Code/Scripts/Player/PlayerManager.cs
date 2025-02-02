@@ -21,7 +21,7 @@ namespace _Code.Scripts.Player
 
         [SerializeField] private float playerNormalHeight;
         [SerializeField] private float playerLiftHeight;
-        [SerializeField] private float playerVerticalSpeed;
+        [FormerlySerializedAs("playerVerticalSpeed")] [SerializeField] private float playerHorizontalSpeed;
         [SerializeField] private float playerSpeed;
         [SerializeField] private float playerFastSpeed;
         [SerializeField] private float playerFlightSpeed;
@@ -144,7 +144,7 @@ namespace _Code.Scripts.Player
             Vector3 direction = (newPos - transform.position).normalized;
             while (Vector3.Distance(transform.position,newPos) > 0.05f)
             {
-                transform.position += direction * (playerVerticalSpeed * Time.deltaTime);
+                transform.position += direction * (playerHorizontalSpeed * Time.deltaTime);
                 if (dir == 1 && newPos.x < transform.position.x) break; 
                 if (dir == -1 && newPos.x > transform.position.x) break;
                 yield return new WaitUntil(() => _gameManager.GameState != GameState.Stop);
@@ -176,7 +176,7 @@ namespace _Code.Scripts.Player
                 while (Vector3.Distance(transform.position,updatedGoalPosition) > 0.05f)
                 {
                     updatedGoalPosition = new Vector3(transform.position.x, playerLiftHeight, transform.position.z);
-                    transform.position += direction * (playerVerticalSpeed * Time.deltaTime);
+                    transform.position += direction * (playerHorizontalSpeed * Time.deltaTime);
                     yield return null;
                 }
 
@@ -190,7 +190,7 @@ namespace _Code.Scripts.Player
             while (Vector3.Distance(transform.position,updatedGoalPosition) > 0.05f)
             {
                 updatedGoalPosition = new Vector3(transform.position.x, playerNormalHeight, transform.position.z);
-                transform.position += direction * (playerVerticalSpeed * Time.deltaTime);
+                transform.position += direction * (playerHorizontalSpeed * Time.deltaTime);
                 yield return null;
             }
 
