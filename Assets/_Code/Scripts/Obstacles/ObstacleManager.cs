@@ -160,13 +160,13 @@ namespace _Code.Scripts.Obstacles
             int newSpacing = Random.Range(0, 3);
             switch (newSpacing)
             {
-                case 1:
+                case 0:
                     newSpawnPos = new Vector3(-obstaclesSpacing, newSpawnPos.y, newSpawnPos.z);
                     break;
-                case 2:
+                case 1:
                     newSpawnPos = new Vector3(0, newSpawnPos.y, newSpawnPos.z);
                     break;
-                case 3:
+                case 2:
                     newSpawnPos = new Vector3(obstaclesSpacing, newSpawnPos.y, newSpawnPos.z);
                     break;
             }
