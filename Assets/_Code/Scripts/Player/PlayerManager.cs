@@ -146,11 +146,11 @@ namespace _Code.Scripts.Player
             {
                 transform.position += direction * (playerVerticalSpeed * Time.deltaTime);
                 if (dir == 1 && newPos.x < transform.position.x) break; 
-                if (dir == -1 && newPos.x > transform.position.x) break; 
-                yield return null;
+                if (dir == -1 && newPos.x > transform.position.x) break;
+                yield return new WaitUntil(() => _gameManager.GameState != GameState.Stop);
             }
 
-            transform.position = newPos;
+            transform.position = new Vector3(newPos.x, transform.position.y, transform.position.z);
             _movePlayerCor = null;
         }
 
