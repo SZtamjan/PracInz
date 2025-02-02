@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using _Code.Scripts.Obstacles;
 using _Code.Scripts.Player;
@@ -40,6 +41,9 @@ namespace _Code.Scripts
 
         public float RoadSpacing => roadSpacing;
 
+        [Tooltip("In seconds")] [SerializeField] private float flightDuration;
+        private Coroutine _flightTimeTrackerCor;
+        private bool _pauseTracking = false;
 
         private void Awake()
         {
@@ -77,6 +81,7 @@ namespace _Code.Scripts
         {
             _roadManager.roadSpeed = 0f;
             _obstacleManager.obstacleSpeed = 0f;
+            if (_flightTimeTrackerCor != null) _pauseTracking = true;
         }
 
         private void Run()
@@ -84,6 +89,7 @@ namespace _Code.Scripts
             _roadManager.roadSpeed = _playerManager.PlayerSpeed;
             _obstacleManager.obstacleSpeed = _playerManager.PlayerSpeed;
             _playerManager.SwitchPlayerLift(false);
+            if (_flightTimeTrackerCor != null) _pauseTracking = false;
         }
 
         private void FastRun()
@@ -91,6 +97,7 @@ namespace _Code.Scripts
             _roadManager.roadSpeed = _playerManager.PlayerFastSpeed;
             _obstacleManager.obstacleSpeed = _playerManager.PlayerFastSpeed;
             _playerManager.SwitchPlayerLift(false);
+            if (_flightTimeTrackerCor != null) _pauseTracking = false;
         }
 
         private void Flight()
@@ -98,6 +105,21 @@ namespace _Code.Scripts
             _roadManager.roadSpeed = _playerManager.PlayerFlightSpeed;
             _obstacleManager.obstacleSpeed = _playerManager.PlayerFlightSpeed;
             _playerManager.SwitchPlayerLift(true);
+            if (_flightTimeTrackerCor != null) _pauseTracking = false;
+            if (_flightTimeTrackerCor == null) _flightTimeTrackerCor = StartCoroutine(TrackTime());
+        }
+
+        private IEnumerator TrackTime()
+        {
+            float timePassed = 0f;
+            while (timePassed < flightDuration)
+            {
+                timePassed += Time.deltaTime;
+                yield return new WaitUntil(() => !_pauseTracking);
+                Debug.Log(timePassed + " " + (timePassed<flightDuration));
+            }
+
+            GameState = GameState.FastRun;
         }
 
         #region Debug

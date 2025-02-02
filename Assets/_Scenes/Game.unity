@@ -3668,6 +3668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roadSpacing: 2.5
+  flightDuration: 5
 --- !u!1 &1612411371
 GameObject:
   m_ObjectHideFlags: 0

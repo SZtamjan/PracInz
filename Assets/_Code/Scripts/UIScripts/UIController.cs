@@ -28,6 +28,7 @@ namespace _Code.Scripts.UIScripts
             }
             set
             {
+                if (_inGameUIState == InGameUIStates.GameOverIU) return;
                 _inGameUIState = value;
                 UIStateChanged();
             }
