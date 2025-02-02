@@ -11,10 +11,10 @@ namespace _Code.Scripts.Points
         
         private float _points;
 
-        private float Points
+        public float Points
         {
             get => _points;
-            set
+            private set
             {
                 _points = value;
                 _displayPoints.UpdatePoints(_points);

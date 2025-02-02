@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using _Code.Scripts.Points;
 using _Code.Scripts.Singleton;
+using TMPro;
 using UnityEngine;
 
 namespace _Code.Scripts.UIScripts
@@ -17,6 +20,7 @@ namespace _Code.Scripts.UIScripts
         private RectTransform currentMenuPosition;
         
         [SerializeField] private DisplayPoints displayPoints;
+        [SerializeField] private TextMeshProUGUI displayPointsGameOverUI;
         public DisplayPoints DisplayPointsProp => displayPoints;
 
         private InGameUIStates _inGameUIState;
@@ -50,6 +54,7 @@ namespace _Code.Scripts.UIScripts
                     break;
                 case InGameUIStates.GameOverIU:
                     ShowUI(gameOverUI);
+                    displayPoints.DisplayPointsOnGameOverUI();
                     _gameManager.GameState = GameState.Stop;
                     break;
                 case InGameUIStates.PauseUI:
@@ -72,7 +77,6 @@ namespace _Code.Scripts.UIScripts
             newUI.localPosition = new Vector3(0, 0, 0);
             currentMenuPosition = newUI;
         }
-
     }
 
     public enum InGameUIStates
