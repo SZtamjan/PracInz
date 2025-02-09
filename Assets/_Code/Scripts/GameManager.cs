@@ -31,7 +31,7 @@ namespace _Code.Scripts
                     throw new InvalidEnumArgumentException(nameof(value), (int)value, typeof(GameState));
                 PreviousGameState = _gameState;
                 _gameState = value;
-                StateChanged();
+                GameStateChanged();
             }
         }
         
@@ -49,7 +49,7 @@ namespace _Code.Scripts
             PrepareComponents();
         }
 
-        private void StateChanged()
+        private void GameStateChanged()
         {
             _playerManager.playerAnimator.SetInteger(State, (int)GameState);
 
