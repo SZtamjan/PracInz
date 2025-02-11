@@ -1,18 +1,19 @@
-﻿namespace _Code.Scripts
+﻿using UnityEngine;
+using UnityEngine.Events;
+
+namespace _Code.Scripts
 {
-    public class ExampleStateMachineScript
+    public enum ExampleGameState
     {
-        public enum GameState
-        {
-            Menu,
-            Gameplay,
-            Pause,
-            GameOver
-        }
-
-        private GameState _currentState;
-
-        public GameState CurrentState
+        Menu,
+        Gameplay,
+        Pause,
+        GameOver
+    }
+    public class ExampleStateMachineScript : MonoBehaviour
+    {
+        private ExampleGameState _currentState;
+        public ExampleGameState CurrentState
         {
             get => _currentState;
             set
@@ -26,16 +27,16 @@
         {
             switch (CurrentState)
             {
-                case GameState.Menu:
+                case ExampleGameState.Menu:
                     //HandleMenu();
                     break;
-                case GameState.Gameplay:
+                case ExampleGameState.Gameplay:
                     //HandleGameplay();
                     break;
-                case GameState.Pause:
+                case ExampleGameState.Pause:
                     //HandlePause();
                     break;
-                case GameState.GameOver:
+                case ExampleGameState.GameOver:
                     //HandleGameOver();
                     break;
             }
