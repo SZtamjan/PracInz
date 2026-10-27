@@ -68,7 +68,7 @@ namespace _Code.Scripts.Obstacles
         {
             _gameManager = GameManager.Instance;
             obstaclesSpacing = _gameManager.RoadSpacing;
-            obstaclesSpawnState = ObstaclesSpawnState.WaitUntilCloseToPlayer;
+            obstaclesSpawnState = ObstaclesSpawnState.WaitSpawnInterval;
         }
 
         private void StateChanged()
@@ -78,15 +78,15 @@ namespace _Code.Scripts.Obstacles
                 case ObstaclesSpawnState.SpawnNewObstacle:
                     SpawnObstacle();
                     break;
-                case ObstaclesSpawnState.WaitUntilCloseToPlayer:
-                    StartCoroutine(WaitForRoadToGetCloser());
+                case ObstaclesSpawnState.WaitSpawnInterval:
+                    StartCoroutine(WaitSpawnInterval());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private IEnumerator WaitForRoadToGetCloser()
+        private IEnumerator WaitSpawnInterval()
         {
             yield return new WaitForSeconds(spawnInterval);
             obstaclesSpawnState = ObstaclesSpawnState.SpawnNewObstacle;
@@ -104,13 +104,13 @@ namespace _Code.Scripts.Obstacles
             ObstacleData data = GetRandomObstacle();
             CurrentObstacle = Instantiate(data.Prefab, CalculateNewPos(data.spawnHeight), Quaternion.identity).transform;
             SetupObstacle(data.MySpeedMultiplier);
-            obstaclesSpawnState = ObstaclesSpawnState.WaitUntilCloseToPlayer;
+            obstaclesSpawnState = ObstaclesSpawnState.WaitSpawnInterval;
         }
 
         private IEnumerator WaitForUnPause()
         {
             yield return new WaitUntil(() => _gameManager.GameState != GameState.Stop);
-            obstaclesSpawnState = ObstaclesSpawnState.WaitUntilCloseToPlayer;
+            obstaclesSpawnState = ObstaclesSpawnState.WaitSpawnInterval;
         }
 
         private void SetupObstacle(float speedMultiplier)
@@ -186,7 +186,7 @@ namespace _Code.Scripts.Obstacles
     public enum ObstaclesSpawnState
     {
         SpawnNewObstacle,
-        WaitUntilCloseToPlayer
+        WaitSpawnInterval
     }
 
     [Serializable]
